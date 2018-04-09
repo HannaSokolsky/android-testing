@@ -36,6 +36,10 @@ public class EspressoSignUpTest {
       resources = InstrumentationRegistry.getTargetContext().getResources();
    }
 
+
+
+
+
    @Test
     public void userSignUpPersonalInfoVerifyRequiredFieldsAreRequired (){
        onView(withId(R.id.button_next))   // create matcher
@@ -53,7 +57,7 @@ public class EspressoSignUpTest {
        onView(withId(R.id.edittext_address_state))
                .check(matches(hasErrorText(resources.getString(R.string.input_error_required))));
        onView(withId(R.id.edittext_address_zip))
-               .check(matches(hasErrorText("Required.")));
+               .check(matches(hasErrorText(resources.getString(R.string.input_error_required))));
 
 
    }
