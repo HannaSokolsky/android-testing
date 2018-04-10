@@ -1,5 +1,6 @@
 package io.mattcarroll.androidtesting.login;
 
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Before;
@@ -11,14 +12,17 @@ import io.mattcarroll.androidtesting.R;
 import io.mattcarroll.androidtesting.SplashActivity;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
 
 /**
  * Created by anna on 4/7/18.
@@ -77,6 +81,27 @@ public class LoginTest extends BaseTest{
         verifyActivityIsCorrect("HomeActivity");
     }
 
+    public void goBackToOverViewScreen(){
+            pressBack();
+    }
+
+
+
+
+    public void verifyLastForDigits (){
+        String accountNumber = getProperties().getProperty("accountNumber");
+        String accountNumberLastfForDigits = accountNumber
+                                 .substring(accountNumber.length()-4, accountNumber.length());
+        onView(withId(R.id.recyclerview_accounts))
+                .perform(RecyclerViewActions.scrollTo(
+                        hasDescendant( withText(accountNumberLastfForDigits))))
+                .check(matches(allOf (
+                        hasDescendant( allOf (
+                                withId(R.id.textview_account_last_digits),
+                                withText(accountNumberLastfForDigits)  )) )));
+
+    }
+
 
     @Test
     public void userIsAbleToAddBankingAccount (){
@@ -92,6 +117,8 @@ public class LoginTest extends BaseTest{
 
         tapLinkAccountBatton();
 
+        goBackToOverViewScreen();
+        verifyLastForDigits ();
     }
 
 
