@@ -4,12 +4,16 @@ import android.content.res.Resources;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.rule.ActivityTestRule;
+import android.util.Log;
 
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.Random;
+
+import io.mattcarroll.androidtesting.BaseTest;
 import io.mattcarroll.androidtesting.R;
 
 import static android.support.test.espresso.Espresso.closeSoftKeyboard;
@@ -34,7 +38,7 @@ import static org.hamcrest.Matchers.hasToString;
  * Created by anna on 4/7/18.
  */
 
-public class EspressoSignUpTest {
+public class EspressoSignUpTest  extends BaseTest{
 
 @Rule
     public final ActivityTestRule<SignUpActivity> activityRule =
@@ -145,7 +149,11 @@ private void selectInterest (String interest){
 
 
 @Test
-public void userSignUpPositiveTest(){
+public void userSignUpPositiveAndCheckAstronomy(){
+
+    Log.d("info", "My name is " + getProperties().getProperty("name"));
+
+
     fillPersonalInfo("Hanna","Sokolsky", "777 Good way", "Polo Alto","CA" , "94040");
 // Select interest on Activity
     clickItemOnTheListView("Astronomy");
@@ -160,7 +168,9 @@ public void userSignUpPositiveTest(){
     clickItemOnTheListView("Astronomy");
     tapNext ();
 
-    fillCredentials("sokolsky@adb.com", "sokol" );
+
+
+    fillCredentials(getProperties().getProperty("email"), getProperties().getProperty("password") );
     tapNext ();
 // Verify user successfully Signed Up
     onView(withText("Signing Up..."))
@@ -179,6 +189,22 @@ public void userSignUpPositiveTest(){
 //
 //    idlingResource.decrement();
 
+}
+
+String renSTR = generateRandomString(10);
+
+String generateRandomString (int length){
+    String base = "ABCDEFJHIJKLMNOPQRSTUVWXYZ1234567890";
+    StringBuilder res = new StringBuilder();
+    Random rand = new Random();
+    while (length >0){
+        int index = rand.nextInt(base.length());
+        res.append(base.charAt(index));
+        length--;
+
+    }
+
+    return res.toString();
 }
 
 
