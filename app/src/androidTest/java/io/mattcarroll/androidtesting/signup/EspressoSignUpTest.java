@@ -14,6 +14,8 @@ import org.junit.Test;
 import java.util.Random;
 
 import io.mattcarroll.androidtesting.BaseTest;
+import io.mattcarroll.androidtesting.PageObjects.InterestsPage;
+import io.mattcarroll.androidtesting.PageObjects.PersonalInfoPage;
 import io.mattcarroll.androidtesting.R;
 
 import static android.support.test.espresso.Espresso.closeSoftKeyboard;
@@ -250,8 +252,14 @@ String generateRandomString (int length){
 
     }
 
+
+
+
    @Test
     public void userSignUpPersonalInfoVerifyRequiredFieldsAreRequired (){
+
+
+
        scrollToandTapNext();
       checkFieldHasError(R.id.edittext_first_name, R.string.input_error_required);
       checkFieldHasError(R.id.edittext_last_name, R.string.input_error_required);
