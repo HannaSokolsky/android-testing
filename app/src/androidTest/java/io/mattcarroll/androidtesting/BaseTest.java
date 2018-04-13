@@ -29,7 +29,7 @@ public class BaseTest {
     @Before
     public void baseSetUp() throws IOException {
         properties = new Properties();
-// how to pass content of .properties file to  propertiies var
+// how to pass content of .properties file to  properties var
         AssetManager testAssetManager = InstrumentationRegistry.getContext().getAssets();
         AssetManager.AssetInputStream assetStream = (AssetManager.AssetInputStream) testAssetManager.open("user.properties");
         properties.load(assetStream);

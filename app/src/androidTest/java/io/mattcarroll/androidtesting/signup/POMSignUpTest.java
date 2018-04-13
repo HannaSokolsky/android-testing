@@ -10,8 +10,10 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import io.mattcarroll.androidtesting.BaseTest;
+import io.mattcarroll.androidtesting.PageObjects.CredentialsPage;
 import io.mattcarroll.androidtesting.PageObjects.InterestsPage;
 import io.mattcarroll.androidtesting.PageObjects.PersonalInfoPage;
+import io.mattcarroll.androidtesting.R;
 import io.mattcarroll.androidtesting.usersession.UserSession;
 
 /**
@@ -44,19 +46,80 @@ public class POMSignUpTest extends BaseTest {
 
 
 @Test
-    public void  userSighUpHappyPath (){
+    public void  userSighUpHappyPathPO (){
 
-    PersonalInfoPage personalInfoPage =  new PersonalInfoPage()
+     new PersonalInfoPage()
+            .firstName(getProperties().getProperty("name"))
+            .lastName(getProperties().getProperty("lastName"))
+            .address1(getProperties().getProperty("address1"))
+            .city(getProperties().getProperty("city"))
+            .state(getProperties().getProperty("state"))
+            .zipcode(getProperties().getProperty("zipcode"))
+            .submitAndExpectInterestsPage();
+
+
+}
+
+
+@Test
+    public void userSignUpPersonalInfoVerifyRequiredFieldsAreRequiredPO() {
+
+     final String  REQUIRED_FIELD_ERROR = resources.getString(R.string.input_error_required);
+
+    PersonalInfoPage personalInfoPage = new PersonalInfoPage();
+    personalInfoPage .submit();
+    personalInfoPage.assertFirstNameHasError(REQUIRED_FIELD_ERROR)
+                    .assertLastNameHasError(REQUIRED_FIELD_ERROR)
+                    .assertAddressHasError(REQUIRED_FIELD_ERROR)
+                    .assertCityHasError(REQUIRED_FIELD_ERROR)
+                    .assertStateHasError(REQUIRED_FIELD_ERROR)
+                    .assertZipHasError(REQUIRED_FIELD_ERROR);
+    }
+
+
+
+@Test
+    public void userSignUpCredentialsVerifyRequiredFieldsAreRequiredPO() {
+
+    final String REQUIRED_FIELD_ERROR = resources.getString(R.string.input_error_required);
+
+    CredentialsPage credentialsPage = new PersonalInfoPage()
+                 .firstName(getProperties().getProperty("name"))
+                 .lastName(getProperties().getProperty("lastName"))
+                 .address1(getProperties().getProperty("address1"))
+                 .city(getProperties().getProperty("city"))
+                 .state(getProperties().getProperty("state"))
+                 .zipcode(getProperties().getProperty("zipcode"))
+                 .submitAndExpectInterestsPage()
+                  .selectInterests("Chess", "Astronomy")
+                 .tapNextAndExpectCredentialsPage();
+        credentialsPage.submit ();
+        credentialsPage.asserHasUserNameError(REQUIRED_FIELD_ERROR);
+
+    }
+
+
+
+
+@Test
+    public void checkAstronomyPO (){
+
+    PersonalInfoPage personalInfoPage = new PersonalInfoPage()
             .firstName(getProperties().getProperty("name"))
             .lastName(getProperties().getProperty("lastName"))
             .address1(getProperties().getProperty("address1"))
             .city(getProperties().getProperty("city"))
             .state(getProperties().getProperty("state"))
             .zipcode(getProperties().getProperty("zipcode"));
-    InterestsPage interestsPage = personalInfoPage.tapOnNextButton();
-
+    InterestsPage interestsPage = personalInfoPage.submitAndExpectInterestsPage();
+    interestsPage.selectInterests("Astronomy");
+    CredentialsPage credentialsPage = interestsPage.tapNextAndExpectCredentialsPage();
+    InterestsPage interestsPage1 = credentialsPage.pressBackButton();
+    interestsPage1.scrollToItemOnTheListView("Astronomy")
+                  .checkIfInterestIsNotSelected("Astronomy");
 
 }
+
 
 
 

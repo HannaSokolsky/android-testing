@@ -2,13 +2,16 @@ package io.mattcarroll.androidtesting.PageObjects;
 
 import android.support.annotation.NonNull;
 
+import io.mattcarroll.androidtesting.BaseTest;
 import io.mattcarroll.androidtesting.R;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
@@ -16,7 +19,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
  * Created by anna on 4/10/18.
  */
 
-public class PersonalInfoPage {
+public class PersonalInfoPage   extends BaseTest {
 
     public PersonalInfoPage(){
    // verify on the correct page
@@ -70,11 +73,70 @@ public PersonalInfoPage firstName (@NonNull String firstName){
 
 
 
-     public InterestsPage tapOnNextButton(){
+     public InterestsPage submitAndExpectInterestsPage(){
          onView(withId(R.id.button_next))
                  .perform(scrollTo(),
                          click()
                  );
          return new InterestsPage();
      }
+
+    public void submit(){
+        onView(withId(R.id.button_next))
+                .perform(scrollTo(),
+                        click()
+                );
+
+    }
+
+
+     public void back (){
+     pressBack();
+     }
+
+
+
+     public PersonalInfoPage assertFirstNameHasError (@NonNull String error){
+         onView(withId(R.id.edittext_first_name))
+                 .check(matches(hasErrorText(error)));
+         return this;
+     }
+
+    public PersonalInfoPage assertLastNameHasError (@NonNull String error){
+        onView(withId(R.id.edittext_last_name))
+                .check(matches(hasErrorText(error)));
+        return this;
+    }
+
+    public PersonalInfoPage assertAddressHasError (@NonNull String error){
+        onView(withId(R.id.edittext_address_line_1))
+                .check(matches(hasErrorText(error)));
+        return this;
+    }
+
+    public PersonalInfoPage assertCityHasError (@NonNull String error){
+        onView(withId(R.id.edittext_address_city))
+                .check(matches(hasErrorText(error)));
+        return this;
+    }
+
+    public PersonalInfoPage assertStateHasError (@NonNull String error){
+        onView(withId(R.id.edittext_address_state))
+                .check(matches(hasErrorText(error)));
+        return this;
+    }
+
+    public PersonalInfoPage assertZipHasError (@NonNull String error){
+        onView(withId(R.id.edittext_address_zip))
+                .check(matches(hasErrorText(error)));
+        return this;
+    }
+
+
+
+
+
+
+
+
 }

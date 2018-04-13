@@ -8,6 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import io.mattcarroll.androidtesting.BaseTest;
+//import io.mattcarroll.androidtesting.R;
 import io.mattcarroll.androidtesting.R;
 import io.mattcarroll.androidtesting.SplashActivity;
 
@@ -22,6 +23,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static io.mattcarroll.androidtesting.R.*;
 import static org.hamcrest.Matchers.allOf;
 
 /**
@@ -42,16 +44,19 @@ public class LoginTest extends BaseTest{
                         typeText(text));
   }
 
+
   public void scrollAndClickElement( int idElement){
       onView(withId(idElement))
              // .perform(scrollTo())
               .perform(click());
   }
 
+
     public void verifyIsElementPresentOnActivity(int idElement){
         onView(withId(idElement)) //  R.id.textview_no_accounts
                 .check(matches(isDisplayed()));
     }
+
 
     public void verifyActivityIsCorrect(String activity){
         onView(withText(activity))
@@ -62,22 +67,22 @@ public class LoginTest extends BaseTest{
 
     public void tapSignInButton(){
         scrollAndClickElement(R.id.button_sign_in);
-    }
+    }  // R.id.button_sign_in
 
     public void tapFloatingActionButton(){
-        scrollAndClickElement(R.id.fab_manage_accounts);
+        scrollAndClickElement(id.fab_manage_accounts);
     }
     public void tapLinkAccountBatton(){
-        scrollAndClickElement(R.id.button_link_account);
+        scrollAndClickElement(id.button_link_account);
     }
 
     @Before
     public void loginToAccount (){
 // login to app
-        typeIntoTextField(R.id.edittext_email, getProperties().getProperty("email"));
-        typeIntoTextField(R.id.edittext_password, getProperties().getProperty("password"));
-        tapSignInButton();  // fab_manage_accounts
-        verifyIsElementPresentOnActivity(R.id.fab_manage_accounts);
+        typeIntoTextField(id.edittext_email, getProperties().getProperty("email"));
+        typeIntoTextField(id.edittext_password, getProperties().getProperty("password"));
+        tapSignInButton();
+        verifyIsElementPresentOnActivity(id.fab_manage_accounts);
         verifyActivityIsCorrect("HomeActivity");
     }
 
@@ -92,12 +97,12 @@ public class LoginTest extends BaseTest{
         String accountNumber = getProperties().getProperty("accountNumber");
         String accountNumberLastfForDigits = accountNumber
                                  .substring(accountNumber.length()-4, accountNumber.length());
-        onView(withId(R.id.recyclerview_accounts))
+        onView(withId(id.recyclerview_accounts))
                 .perform(RecyclerViewActions.scrollTo(
                         hasDescendant( withText(accountNumberLastfForDigits))))
                 .check(matches(allOf (
                         hasDescendant( allOf (
-                                withId(R.id.textview_account_last_digits),
+                                withId(id.textview_account_last_digits),
                                 withText(accountNumberLastfForDigits)  )) )));
 
     }
@@ -111,9 +116,9 @@ public class LoginTest extends BaseTest{
         tapLinkAccountBatton();
         verifyActivityIsCorrect("Android Testing");
    //  Enter Bank Account info
-        typeIntoTextField(R.id.edittext_bank_name, getProperties().getProperty("bankName"));
-        typeIntoTextField(R.id.edittext_account_number, getProperties().getProperty("accountNumber"));
-        typeIntoTextField(R.id.edittext_password, getProperties().getProperty("passwordForBankAccount"));
+        typeIntoTextField(id.edittext_bank_name, getProperties().getProperty("bankName"));
+        typeIntoTextField(id.edittext_account_number, getProperties().getProperty("accountNumber"));
+        typeIntoTextField(id.edittext_password, getProperties().getProperty("passwordForBankAccount"));
 
         tapLinkAccountBatton();
 
@@ -125,27 +130,34 @@ public class LoginTest extends BaseTest{
     @Test
     public void userIsAbleToLogInSuccessfully(){
 
-        onView(withId(R.id.edittext_email))
+        onView(withId(id.edittext_email))
                 .perform(typeText("adb@adb"));
-        onView(withId(R.id.edittext_password))
+        onView(withId(id.edittext_password))
                 .perform(typeText("password"));
-        onView(withId(R.id.button_sign_in))
+        onView(withId(id.button_sign_in))
                 .perform(scrollTo())
                 .perform(click());
-        onView(withId(R.id.textview_no_accounts))
+        onView(withId(id.textview_no_accounts))
                 .check(matches(isDisplayed()));
 
     }
 
     @Test
     public void userSignInVerifyRequiredFielsAreRequired(){
-        onView(withId(R.id.button_sign_in))
+        onView(withId(id.button_sign_in))
                 .perform(scrollTo())
                 .perform(click());
-        onView(withId(R.id.edittext_email))
+        onView(withId(id.edittext_email))
                 .check(matches(hasErrorText("This field is required")));
 
     }
+
+
+
+
+
+
+
 
 
 
