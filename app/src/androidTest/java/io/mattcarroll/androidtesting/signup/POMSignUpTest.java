@@ -53,7 +53,7 @@ public class POMSignUpTest extends BaseTest {
         UserSession.getInstance().logout();
     }
 
-
+//To handle screenshots on failure
     public FailureHandler failureHandler = new FailureHandler() {
         @Override
         public void handle(Throwable throwable, Matcher<View> matcher) {
@@ -68,6 +68,7 @@ public class POMSignUpTest extends BaseTest {
     @Test
     public void screenFailuresTest (){
         onView (withId(R.id.edittext_bank_name))
+                    //  to catch screenshot on failure
                 .withFailureHandler(failureHandler)
                 .perform(click());
 
