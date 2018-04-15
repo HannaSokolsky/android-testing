@@ -2,12 +2,18 @@ package io.mattcarroll.androidtesting.signup;
 
 import android.content.res.Resources;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.FailureHandler;
 import android.support.test.rule.ActivityTestRule;
+import android.view.View;
 
+import com.squareup.spoon.*;
+
+import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
 
 import io.mattcarroll.androidtesting.BaseTest;
 import io.mattcarroll.androidtesting.PageObjects.CredentialsPage;
@@ -15,6 +21,10 @@ import io.mattcarroll.androidtesting.PageObjects.InterestsPage;
 import io.mattcarroll.androidtesting.PageObjects.PersonalInfoPage;
 import io.mattcarroll.androidtesting.R;
 import io.mattcarroll.androidtesting.usersession.UserSession;
+
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 /**
  * Created by anna on 4/10/18.
@@ -44,11 +54,40 @@ public class POMSignUpTest extends BaseTest {
     }
 
 
+    public FailureHandler failureHandler = new FailureHandler() {
+        @Override
+        public void handle(Throwable throwable, Matcher<View> matcher) {
+            Spoon.screenshot(activityRule.getActivity() , "ERROR");
+        }
+    };
+
+
+
+
+
+    @Test
+    public void screenFailuresTest (){
+        onView (withId(R.id.edittext_bank_name))
+                .withFailureHandler(failureHandler)
+                .perform(click());
+
+    }
+
+
+
+
+
+
+
 
 @Test
     public void  userSighUpHappyPathPO (){
 
-     new PersonalInfoPage()
+
+   Spoon.screenshot(activityRule.getActivity(),  "initial-state");
+
+
+    new PersonalInfoPage()
             .firstName(getProperties().getProperty("name"))
             .lastName(getProperties().getProperty("lastName"))
             .address1(getProperties().getProperty("address1"))
@@ -57,7 +96,7 @@ public class POMSignUpTest extends BaseTest {
             .zipcode(getProperties().getProperty("zipcode"))
             .submitAndExpectInterestsPage();
 
-
+   Spoon.screenshot(activityRule.getActivity(),  "final-state");
 }
 
 

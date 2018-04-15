@@ -1,4 +1,8 @@
 apply plugin: 'com.android.application'
+apply plugin: 'spoon'
+
+// for spoon reporting
+
 
 android {
     compileSdkVersion 25
@@ -77,4 +81,23 @@ dependencies {
     // or "androidTestCompile", depending on the app's implementation
     // androidTestCompile for now, might change later
     androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:3.0.0'
+
+    androidTestCompile 'com.squareup.spoon:spoon-client:1.6.4'
+}
+
+spoon {
+    // for debug output
+    debug = true
+
+    // To run a single test class
+    className = 'io.mattcarroll.androidtesting.signup.POMSignUpTest'
+
+    // To run a single method in TestCase
+   // methodName = 'userSighUpHappyPathPO'
+
+    // To execute the tests device by device */
+    sequential = true
+
+    // To grant permissions to Android M >= devices */
+    grantAllPermissions = true
 }

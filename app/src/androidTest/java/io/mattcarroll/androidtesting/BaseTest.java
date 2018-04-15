@@ -2,7 +2,12 @@ package io.mattcarroll.androidtesting;
 
 import android.content.res.AssetManager;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.FailureHandler;
+import android.view.View;
 
+import com.squareup.spoon.Spoon;
+
+import org.hamcrest.Matcher;
 import org.junit.Before;
 
 import java.io.IOException;
@@ -33,7 +38,12 @@ public class BaseTest {
         AssetManager testAssetManager = InstrumentationRegistry.getContext().getAssets();
         AssetManager.AssetInputStream assetStream = (AssetManager.AssetInputStream) testAssetManager.open("user.properties");
         properties.load(assetStream);
+
     }
+
+
+
+
 
 
 }
